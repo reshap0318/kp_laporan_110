@@ -84,7 +84,8 @@ class laporanController extends Controller
     public function show($id,Request $request)
     {
         try {
-          return redirect()->route('user.index',['laporan='.$id]);
+          $laporan = laporan::find($id);
+          return view('backend.laporan.show',compact('laporan'));
         } catch (\Exception $e) {
           toast()->error($e->getMessage(), 'Eror');
           toast()->error('Terjadi Eror Saat Meng-Load Data', 'Gagal');

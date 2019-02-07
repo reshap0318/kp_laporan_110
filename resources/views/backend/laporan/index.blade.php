@@ -83,12 +83,6 @@
                   }
               },
               {
-                  extend: 'print',
-                  exportOptions: {
-                      columns: [0, 1]
-                  }
-              },
-              {
                   extend: 'csv',
                   exportOptions: {
                       columns: [0, 1]
