@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('title')
-	New BPKB Hilang
+	Edit Laporan {{$bpkb->nama_pemilik}}
 @stop
 
 
@@ -10,19 +10,19 @@
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
-        <h2>Form Create BPKB Hilang<small>isi data * dengan benar</small></h2>
+        <h2>Form Edit Laporan {{$bpkb->nama_pemilik}}<small>isi data * dengan benar</small></h2>
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
         <br />
-{{ Form::open(array('url' => route('bpkb.store'), 'class' => 'form-horizontal','files' => true,'class'=>'form-horizontal form-label-left','data-parsley-validate','id'=>'demo-form2')) }}
+{{ Form::model($bpkb, array('method' => 'PATCH', 'url' => route('kendaraan.update', $bpkb->id), 'class' => 'form-horizontal form-label-left', 'files' => true,'data-parsley-validate','id'=>'demo-form2')) }}
 
-          @include('backend.laporan._form')
+          @include('backend.bpkb._form')
 
           <div class="ln_solid"></div>
           <div class="form-group">
             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-offset-3 text-center">
-              <a class="btn btn-primary" href="{{route('bpkb.index')}}">Cancel</a>
+              <a class="btn btn-primary" href="{{route('kendaraan.index')}}">Cancel</a>
 			  			<button class="btn btn-primary" type="reset">Reset</button>
               <button type="submit" class="btn btn-success">Submit</button>
             </div>

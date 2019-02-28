@@ -9,6 +9,24 @@ class laporan extends Model
 
   protected $table = 'laporan';
 
+  protected $casts = [
+        'no_bpkb' => 'string',
+        'no_pol' => 'string',
+        'no_surat_pengantar' => 'string',
+        'merek_type' => 'string',
+        'tahun_pembuatan' => 'integer',
+        'tahun_perakitan' => 'integer',
+        'warna' => 'string',
+        'no_mesin' => 'string',
+        'no_rangka' => 'string',
+        'id_jenis' => 'integer',
+        'tanggal_surat' => 'date',
+        'tanggal_kehilangan' => 'date',
+        'nama_pemilik' => 'string',
+        'alamat' => 'text',
+        'ttd_id' => 'integer',
+    ];
+
   protected $fillable = [
     'no_bpkb',
     'no_pol',

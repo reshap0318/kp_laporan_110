@@ -9,7 +9,7 @@
   <div class="profile clearfix">
     <div class="profile_pic">
       @if(is_null(Sentinel::getUser()->avatar)||Sentinel::getUser()->avatar=="")
-        <img src="{{ asset('/img/lea.png') }}" alt="..." class="img-circle profile_img" style="height: 70px;width: 70px">
+        <img src="{{ asset('/img/logo.png') }}" alt="..." class="img-circle profile_img" style="height: 70px;width: 70px">
       @else
         <img src="{{ url('avatar/profile-pict/'.Sentinel::getUser()->avatar) }}" alt="..." class="img-circle profile_img" style="height: 70px;width: 70px">
       @endif
@@ -57,8 +57,17 @@
         @if (Sentinel::getUser()->hasAccess(['tanda-tangan.index']))
           <li class=""><a href="{{route('tanda-tangan.index')}}"><i class="fa fa-puzzle-piece"></i>Tanda Tangan</a></li>
         @endif
-        @if (Sentinel::getUser()->hasAccess(['laporan.index']))
-          <li class=""><a href="{{route('laporan.index')}}"><i class="fa fa-puzzle-piece"></i>Laporan</a></li>
+        @if (Sentinel::getUser()->hasAnyAccess(['bpkb.index','kendaraan.index']))
+          <li class=""><a><i class="fa fa-puzzle-piece"></i>Laporan <span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu" style="display:none;">
+              @if (Sentinel::getUser()->hasAccess(['bpkb.index']))
+                <li><a href="{{route('bpkb.index')}}">BPKB Hilang</a></li>
+              @endif
+              @if(Sentinel::getUser()->hasAccess(['kendaraan.index']))
+              <li><a href="{{route('kendaraan.index')}}">Kendaraan Hilang</a></li>
+              @endif
+            </ul>
+          </li>
         @endif
       </ul>
     </div>

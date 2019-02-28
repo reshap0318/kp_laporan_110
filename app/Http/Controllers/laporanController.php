@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 use App\laporan;
 use App\ttd;
 use App\jenis;
+use DB;
 
 class laporanController extends Controller
 {
     public function index(Request $request)
     {
         try {
-          $laporans = laporan::all();
-          return view('backend.laporan.index',compact('laporans'));
+          return view('backend.laporan.index');
         } catch (\Exception $e) {
           toast()->error($e->getMessage(), 'Eror');
           toast()->error('Terjadi Eror Saat Meng-Load Data', 'Gagal');
@@ -38,15 +38,15 @@ class laporanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-          'no_bpkb' => 'required|unique:laporan,no_bpkb',
-          'no_pol' => 'required|unique:laporan,no_bpkb',
-          'no_surat_pengantar' => 'required|unique:laporan,no_surat_pengantar',
+          'no_bpkb' => 'required',
+          'no_pol' => 'required',
+          'no_surat_pengantar' => 'required',
           'merek_type' => 'required',
           'tahun_pembuatan' => 'required',
           'tahun_perakitan' => 'required',
           'warna' => 'required',
-          'no_mesin' => 'required|unique:laporan,no_mesin',
-          'no_rangka' => 'required|unique:laporan,no_rangka',
+          'no_mesin' => 'required',
+          'no_rangka' => 'required',
           'id_jenis' => 'required',
           'tanggal_surat' => 'required',
           'tanggal_kehilangan' => 'required',
@@ -72,7 +72,7 @@ class laporanController extends Controller
           $laporan->alamat = $request->alamat;
           $laporan->ttd_id = $request->ttd_id;
           $laporan->save();
-          return redirect()->route('laporan.index');
+          return redirect()->route('bpkb.index');
          toast()->success('Berhasil Menyimpan Pangkat', 'Berhasil');
         } catch (\Exception $e) {
           toast()->error($e->getMessage(), 'Eror');
@@ -110,18 +110,16 @@ class laporanController extends Controller
     public function update($id,Request $request)
     {
         $request->validate([
-          'no_bpkb' => 'required|unique:laporan,no_bpkb,'.$id,
-          'no_pol' => 'required|unique:laporan,no_bpkb,'.$id,
-          'no_surat_pengantar' => 'required|unique:laporan,no_surat_pengantar,'.$id,
+          'no_bpkb' => 'required',
+          'no_pol' => 'required',
+          'no_surat_pengantar' => 'required',
           'merek_type' => 'required',
           'tahun_pembuatan' => 'required',
           'tahun_perakitan' => 'required',
           'warna' => 'required',
-          'no_mesin' => 'required|unique:laporan,no_mesin,'.$id,
-          'no_rangka' => 'required|unique:laporan,no_rangka,'.$id,
+          'no_mesin' => 'required',
+          'no_rangka' => 'required',
           'id_jenis' => 'required',
-          'tanggal_surat' => 'required',
-          'tanggal_kehilangan' => 'required',
           'nama_pemilik' => 'required',
           'alamat' => 'required',
           'ttd_id' => 'required',
@@ -138,14 +136,18 @@ class laporanController extends Controller
           $laporan->no_mesin = $request->no_mesin;
           $laporan->no_rangka = $request->no_rangka;
           $laporan->id_jenis = $request->id_jenis;
-          $laporan->tanggal_surat = date('Y-m-d', strtotime($request->tanggal_surat));
-          $laporan->tanggal_kehilangan = date('Y-m-d', strtotime($request->tanggal_kehilangan));;
+          if($request->tanggal_surat){
+            $laporan->tanggal_surat = date('Y-m-d', strtotime($request->tanggal_surat));
+          }
+          if($request->tanggal_kehilangan){
+            $laporan->tanggal_kehilangan = date('Y-m-d', strtotime($request->tanggal_kehilangan));
+          }
           $laporan->nama_pemilik = $request->nama_pemilik;
           $laporan->alamat = $request->alamat;
           $laporan->ttd_id = $request->ttd_id;
           $laporan->update();
-          toast()->success('Berhasil Mengupdate Pangkat', 'Berhasil');
-          return redirect()->route('laporan.index');
+          toast()->success('Berhasil Mengupdate Kendaraan Hilang', 'Berhasil');
+          return redirect()->route('bpkb.index');
         } catch (\Exception $e) {
           toast()->error($e->getMessage(), 'Eror');
           toast()->error('Terjadi Eror Saat Meng-Load Data', 'Gagal');
@@ -158,12 +160,22 @@ class laporanController extends Controller
         try {
           $laporan = laporan::find($id);
           $laporan->delete();
-          return redirect()->route('laporan.index');
-          toast()->success('Berhasil Menghapus Pangkat', 'Berhasil');
+          return redirect()->route('bpkb.index');
+          toast()->success('Berhasil Menghapus Kendaraan Hilang', 'Berhasil');
         } catch (\Exception $e) {
           toast()->error($e->getMessage(), 'Eror');
           toast()->error('Terjadi Eror Saat Meng-Load Data', 'Gagal');
           return redirect()->back();
         }
+    }
+
+    public function dataajax(Request $request)
+    {
+        $laporans = laporan::select('laporan.*','jenis.nama as jenis',DB::RAW('DATE_FORMAT(laporan.tanggal_surat, "%d %M %Y") as tgl'))->leftjoin('jenis','laporan.id_jenis','=','jenis.id');
+        if($request->awal && $request->akhir){
+          $laporans = laporan::select('laporan.*','jenis.nama as jenis',DB::RAW('DATE_FORMAT(laporan.tanggal_surat, "%d %M %Y") as tgl'))->leftjoin('jenis','laporan.id_jenis','=','jenis.id')->whereRAW("DATE_FORMAT(laporan.tanggal_surat, '%Y%m%d') BETWEEN '$request->awal' AND '$request->akhir'");
+        }
+        $laporans = $laporans->orderby('laporan.tanggal_surat','desc')->get();
+        return '{"data" : '.json_encode($laporans).'}';
     }
 }

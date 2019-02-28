@@ -7,7 +7,7 @@
     <li class="">
       <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
       @if(is_null(Sentinel::getUser()->avatar)||Sentinel::getUser()->avatar=="")
-        <img src="{{ asset('/img/lea.png') }}" alt="...">
+        <img src="{{ asset('/img/logo.png') }}" alt="...">
       @else
         <img src="{{ url('avatar/profile-pict/'.Sentinel::getUser()->avatar) }}" alt="..." >
       @endif

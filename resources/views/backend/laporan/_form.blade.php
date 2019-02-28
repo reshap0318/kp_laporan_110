@@ -42,7 +42,6 @@
   <div class="col-md-6 col-sm-6 col-xs-12">
     {!! Form::text('merek_type', null, ['class' => 'form-control','class'=>'form-control col-md-7 col-xs-12']) !!}
   </div>
-  <button type="button" name="button" class="btn btn-primary"> <i class="fa fa-exchange"></i> </button>
 </div>
 
 
@@ -87,7 +86,7 @@
 
 
 <div class="form-group">
-  {!! Form::label('tanggal_surat', 'Tanggal Surat *', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+  {!! Form::label('tanggal_surat', 'Tanggal Surat SPKT*', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}
   <div class="col-md-6 col-sm-6 col-xs-12">
     {!! Form::date('tanggal_surat', null, ['class' => 'form-control','class'=>'form-control col-md-7 col-xs-12']) !!}
   </div>
@@ -99,7 +98,6 @@
     {!! Form::date('tanggal_kehilangan', null, ['class' => 'form-control','class'=>'form-control col-md-7 col-xs-12']) !!}
   </div>
 </div>
-
 
 <div class="form-group">
   {!! Form::label('alamat', 'Alamat *', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']) !!}

@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('title')
-  Kehilangan BPKB
+  List Kehilangan Motor
 @stop
 
 @section('content')
@@ -22,14 +22,14 @@
       </div>
     </div>
     <ul class="nav navbar-right panel_toolbox">
-      @if (Sentinel::getUser()->hasAccess(['bpkb.create']))
-        <a href="{{route('bpkb.create')}}" class="btn btn-success">New Kehilangan BPKB</a>
+      @if (Sentinel::getUser()->hasAccess(['kendaraan.create']))
+        <a href="{{route('kendaraan.create')}}" class="btn btn-success">New List Kehilangan Motor</a>
       @endif
     </ul>
     <div class="clearfix"></div>
   </div>
   <div class="x_content">
-    <table class="table table-bordered table-striped table-hover" id="tblbpkb" style="width:100%">
+    <table class="table table-bordered table-striped table-hover" id="tblkendaraan" style="width:100%">
       <thead>
         <tr class="headings">
           <th>No</th>
@@ -45,31 +45,31 @@
     </table>
   </div>
 </div>
-{!! Form::open(['method'=>'DELETE', 'route' => ['bpkb.destroy', 1], 'style' => 'display:inline','id'=>'deletef']) !!}
+{!! Form::open(['method'=>'DELETE', 'route' => ['kendaraan.destroy', 1], 'style' => 'display:inline','id'=>'deletef']) !!}
 {!! Form::close() !!}
 @endsection
 
 @section('scripts')
 <script type="text/javascript">
     $(document).ready(function(){
-        table = $('#tblbpkb').DataTable({
-            "ajax": "{{url('bpkbajax')}}",
+        table = $('#tblkendaraan').DataTable({
+            "ajax": "{{url('kendaraanajax')}}",
             "columns": [
-                { "data": "no_surat_pengantar" },
-                { "data": "no_surat_pengantar" },
+                { "data": "no_ket" },
+                { "data": "no_ket" },
                 { "data": "nama_pemilik" },
                 { "data": "jenis" },
-                { "data": "merek_type" },
+                { "data": "merek" },
                 { "data": "no_pol" },
                 { "data": "tgl" },
                 { defaultContent : ''+
-                @if (Sentinel::getUser()->hasAccess(['bpkb.show']))
+                @if (Sentinel::getUser()->hasAccess(['kendaraan.show']))
                   '<a id="view" class="btn btn-success btn-xs">View</a>'+
                 @endif
-                @if (Sentinel::getUser()->hasAccess(['bpkb.show']))
+                @if (Sentinel::getUser()->hasAccess(['kendaraan.show']))
                   '<a id="edit" class="btn btn-success btn-xs">Edit</a>'+
                 @endif
-                @if (Sentinel::getUser()->hasAccess(['bpkb.show']))
+                @if (Sentinel::getUser()->hasAccess(['kendaraan.show']))
                   '<a id="delete" class="btn btn-danger btn-xs">Delete</a>'
                 @endif}
             ],
@@ -116,21 +116,21 @@
               }
             ]
           });
-          $('#tblbpkb tbody').on( 'click', '#edit', function () {
+          $('#tblkendaraan tbody').on( 'click', '#edit', function () {
               var data = table.row( $(this).parents('tr') ).data();
-              window.open("{{url('bpkb')}}/"+data.id+"/edit","_self");
+              window.open("{{url('kendaraan')}}/"+data.id+"/edit","_self");
           } );
 
-          $('#tblbpkb tbody').on( 'click', '#view', function () {
+          $('#tblkendaraan tbody').on( 'click', '#view', function () {
               var data = table.row( $(this).parents('tr') ).data();
-              window.open("{{url('bpkb')}}/"+data.id,"_self");
+              window.open("{{url('kendaraan')}}/"+data.id,"_self");
           } );
 
-          $('#tblbpkb tbody').on( 'click', '#delete', function () {
+          $('#tblkendaraan tbody').on( 'click', '#delete', function () {
               var data = table.row( $(this).parents('tr') ).data();
               var fdelete = document.getElementById('deletef');
-              if(confirm("yakin Akan Menghapus Kehilangan BPKB Ini?")==true){
-                fdelete.action = "{{url('bpkb')}}/"+data.id;
+              if(confirm("yakin Akan Menghapus List Kehilangan Motor Ini?")==true){
+                fdelete.action = "{{url('kendaraan')}}/"+data.id;
                 fdelete.submit();
               }
           } );
@@ -152,9 +152,9 @@
 
       function cb(start, end) {
 
-          table.ajax.url("{{url('bpkbajax')}}?awal="+start.format('YYYYMMD')+"&akhir="+end.format('YYYYMMD')).load();
+          table.ajax.url("{{url('kendaraanajax')}}?awal="+start.format('YYYYMMD')+"&akhir="+end.format('YYYYMMD')).load();
           $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-          console.log("{{url('bpkbajax')}}?awal="+start.format('YYYYMMD')+"&akhir="+end.format('YYYYMMD'));
+          console.log("{{url('kendaraanajax')}}?awal="+start.format('YYYYMMD')+"&akhir="+end.format('YYYYMMD'));
       }
 
       $('#reportrange').daterangepicker({

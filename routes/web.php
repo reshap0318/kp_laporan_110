@@ -68,9 +68,14 @@ Route::group(['middleware' => ['web', 'auth', 'permission'] ], function () {
   //tanda tangan
 
   //laporan
-  Route::resource('laporan','laporanController');
+  Route::resource('bpkb','laporanController');
+  Route::get('bpkbajax','laporanController@dataajax');
   //laporan
 
+  //laporan
+  Route::resource('kendaraan','laporanBpkbController');
+  Route::get('kendaraanajax','laporanBpkbController@kendaraanajax');
+  //laporan
 
 
 });

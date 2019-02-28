@@ -1,32 +1,84 @@
 @extends('layouts.frontend')
+@section('style')
+  <style media="screen">
+    @page size-A4 {size:  21.0cm 29.7cm; margin: 1.5cm;}
+    body {
+       padding: 0;
+       margin: 0;
+    }
+  </style>
+@stop
+
 @section('title')
-  Cetak Laporan {{$laporan->no_surat_pengantar}}
+  Cetak Kendaraan {{$laporan->no_surat_pengantar}}
 @stop
 
 @section('content')
+<?php
+
+  function roma($bulan)
+  {
+      if($bulan=='01'){
+        $bulan = 'I';
+      }elseif('02'){
+        $bulan = 'II';
+      }elseif('03'){
+        $bulan = 'III';
+      }elseif('04'){
+        $bulan = 'IV';
+      }elseif('05'){
+        $bulan = 'V';
+      }elseif('06'){
+        $bulan = 'VI';
+      }elseif('07'){
+        $bulan = 'VII';
+      }elseif('08'){
+        $bulan = 'VIII';
+      }elseif('09'){
+        $bulan = 'IX';
+      }elseif('10'){
+        $bulan = 'X';
+      }elseif('11'){
+        $bulan = 'XI';
+      }elseif('12'){
+        $bulan = 'XII';
+      }
+
+      echo $bulan;
+  }
+?>
 <div class="x_panel">
   <div class="x_title">
-    <h2>Cetak Laporan {{$laporan->no_surat_pengantar}}</h2>
+    <h2>Cetak Kendaraan {{$laporan->no_surat_pengantar}}</h2>
     <ul class="nav navbar-right panel_toolbox">
-      <a onclick="printContent('cetak')" class="btn btn-success">Cetak Laporan</a>
+      <a onclick="printContent('cetak')" class="btn btn-success">Cetak Kendaraan</a>
     </ul>
     <div class="clearfix"></div>
   </div>
   <div class="x_content" id="cetak" style="color:black;">
     <div class="row">
       <div class="col-md-4 text-center">
-        <p style="font-size:1.2em;">KEPOLISIAN NEGARA REPUBLIK INDONESIA
-        <br>
-        DAERAH SUMATERA BARAT <br>
-        DIREKTORAT RESOURCE KRIMINAL UMUM</p>
+        <table>
+          <tr>
+            <td>
+            <p style="font-size:1.2em;">KEPOLISIAN NEGARA REPUBLIK INDONESIA
+            <br>
+            DAERAH SUMATERA BARAT <br>
+            DIREKTORAT RESERSE KRIMINAL UMUM</p></td>
+          </tr>
+          <tr>
+            <td><hr style="height:1px;border:none;color:#333;width:350px;background-color:#333;border-bottom:1px solid #333;margin-top:-10px;display: block">
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
     <div class="row">
       <div class="text-center">
-          <img src="{{asset('img/polri.jpg')}}" alt="">
-          <h3 style="color:black;padding-bottom:-0px;margin-bottom:-20px">SURAT KETERANGAN</h3>
-          <hr style="height:1px;border:none;color:#333;background-color:#333;width:300px;margin-bottom:-0px" />
-          <p>Nomor : SKET/&emsp;/&emsp;/1/res.1.24/2019/Ditrireskrimum</p>
+          <img src="{{asset('img/polri.jpg')}}" alt="" style="width:100px">
+          <h3 style="color:black;padding-bottom:-0px;margin-bottom:-20px;">SURAT KETERANGAN</h3>
+          <hr style="height:1px;border:none;color:#333;background-color:#333;width:360px;border-bottom:1px solid #333;margin-bottom:-0px" />
+          <p style="font-size:1.2em;">Nomor : SKET/&emsp;&emsp;/{{roma(Carbon\Carbon::now()->format('m'))}}/Res.1.24/{{Carbon\Carbon::now()->format('Y')}}/Ditrireskrimum</p>
       </div>
     </div>
     <br>
@@ -103,53 +155,51 @@
     <br>
     <div class="row">
       <div class="col-md-12">
-        <p style="font-size:1.2em;">Setelah dilakukan pengecekan sesuai dengan data yang ada pada kami ternyata BPKB kendaraan tersebut memang HILANG sesuai dengan Laporan Pengaduan Nomor : {{$laporan->no_surat_pengantar}}, Tanggal <font style="background:red">10 Januari 2019</font>, sebagaimana terlampir, dan Tidak tercantum dalam Daftar Pencarian Barang (DPB) yang merupakan Tindak Pidana.</p>
+        <p style="font-size:1.2em;">Setelah dilakukan pengecekan sesuai dengan data yang ada pada kami ternyata BPKB kendaraan tersebut memang HILANG sesuai dengan Laporan Pengaduan Nomor : {{$laporan->no_surat_pengantar}}, Tanggal {{$laporan->tanggal_surat->format('d F Y')}}, sebagaimana terlampir, dan Tidak tercantum dalam Daftar Pencarian Barang (DPB) yang merupakan Tindak Pidana.</p>
       </div>
     </div>
     <br>
     <div class="row">
-      <div class="col-md-4 col-md-offset-8">
-        <div class="" style="font-size:1.2em;">
-          <table style="width:100%">
-            <thead>
-              <th style="width:100px;vertical-align: top;"></th>
-              <th style="width:20px;vertical-align: top;"></th>
-              <th style="width:200px;"></th>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Dikeluarkan di</td>
-                <td style="text-align:center"> : </td>
-                <td style="text-align:left">P a d a n g</td>
-              </tr>
-              <tr>
-                <td>Pada Tanggal</td>
-                <td style="text-align:center"> : </td>
-                <td style="text-align:left">&emsp;&emsp;&emsp;-&emsp;&emsp;- 2019</td>
-              </tr>
-            </tbody>
+      <div align="right" style="font-size:1.2em">
+          <table border="0" style="margin-right:20px">
+            <tr>
+              <td>
+                <table style="width:100%">
+                  <tbody>
+                    <tr>
+                      <td>Dikeluarkan di</td>
+                      <td style="text-align:center"> : </td>
+                      <td style="text-align:justify;">&#160;&#160;&#160;P&#160;&#160;&#160;a&#160;&#160;&#160;d&#160;&#160;&#160;a&#160;&#160;&#160;n&#160;&#160;&#160;g</td>
+                    </tr>
+                    <tr style="border-bottom:2px solid #333;">
+                      <td>Pada Tanggal</td>
+                      <td style="text-align:center"> : </td>
+                      <td style="text-align:right">&emsp;&emsp;-&emsp;&emsp;- &emsp;{{Carbon\Carbon::now()->format('Y')}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table style="width:100%">
+                  <thead>
+                    <th style="width:100px;vertical-align: top;"></th>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>an. DIRRESKRIMUM POLDA SUMBAR</td>
+                    </tr>
+                    <tr>
+                      <td  style="text-align:center">KASUBBAG RENMIN</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br><br><br>
+                <div style="text-align:center">
+                  {{$laporan->ttd->nama}}
+                  <div style="border-bottom:2px solid #333;"></div><br>
+                  <p style="margin-top:-20px">{{$laporan->ttd->jabatan}}&emsp;NIP. {{$laporan->ttd->nrp}}12312121</p>
+                </div>
+              </td>
+            </tr>
           </table>
-          <hr style="height:1px;border:none;color:#333;background-color:#333;width:280px;margin-top:-0px;margin-left:-0px" />
-          <table style="width:75%">
-            <thead>
-              <th style="width:100px;vertical-align: top;"></th>
-            </thead>
-            <tbody>
-              <tr>
-                <td>an. DIRRESKRIMUM POLDA SUMBAR</td>
-              </tr>
-              <tr>
-                <td  style="text-align:center">KASUBBAG RENMIN</td>
-              </tr>
-            </tbody>
-          </table>
-          <br><br><br>
-          <div style="width:75%;text-align:center">
-            {{$laporan->ttd->nama}}
-            <hr style="height:1px;border:none;color:#333;background-color:#333;width:280px;margin-top:-0px;margin-left:-0px" />
-            <p style="margin-top:-20px">PENATA I NIP. {{$laporan->ttd->nrp}}</p>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -159,7 +209,8 @@
   function printContent(el){
     var restorepage = document.body.innerHTML;
   	var printcontent = document.getElementById(el).innerHTML;
-  	document.body.innerHTML = printcontent;
+    console.log(printcontent);
+  	document.body.innerHTML =  printcontent;
   	window.print();
   	document.body.innerHTML = restorepage;
   }
